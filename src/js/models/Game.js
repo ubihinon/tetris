@@ -60,7 +60,7 @@ export default class Game {
     }
 
     rotatePiece() {
-        this.rotateBlocks()
+        this.rotateBlocks();
 
         if (this.hasCollision()) {
             this.rotateBlocks(false);
@@ -100,7 +100,8 @@ export default class Game {
             for (let x = 0; x < blocks[y].length; x++) {
                 if (
                     blocks[y][x] &&
-                    ((this.playfield[pieceY + y] === undefined || this.playfield[pieceY + y][pieceX + x] === undefined) ||
+                    ((this.playfield[pieceY + y] === undefined
+                        || this.playfield[pieceY + y][pieceX + x] === undefined) ||
                         this.playfield[pieceY + y][pieceX + x])) {
                     return true;
                 }
