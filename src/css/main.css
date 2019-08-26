@@ -1,0 +1,19 @@
+body {
+    background: black;
+}
+
+.header {
+    color: rebeccapurple;
+    margin: auto;
+    font-family: "Comic Sans MS";
+    width: fit-content;
+    text-transform: uppercase;
+}
+
+#canvas-container {
+    text-align:center;
+}
+
+canvas {
+    background: rebeccapurple;
+}
