@@ -36,7 +36,7 @@ export default class Controller {
 
     updateView() {
         const state = this.game.getState();
-        console.log(state);
+
         if (state.isGameOver) {
             this.view.renderEndScreen(state);
         } else if (!this.isPlaying) {
