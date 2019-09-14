@@ -41,9 +41,7 @@ export default class Controller {
         if (state.isGameOver) {
             this.view.renderEndScreen(state);
         } else if (!this.isPlaying) {
-            if (!this.view.isPauseScreen()) {
-                this.view.renderPauseScreen();
-            }
+            this.view.renderPauseScreen();
         } else {
             this.view.renderMainScreen(state);
         }

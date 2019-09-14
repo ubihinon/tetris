@@ -65,6 +65,10 @@ export default class View {
     }
 
     renderPauseScreen() {
+        if (this.isPauseScreen()) {
+            return;
+        }
+
         this.context.fillStyle = 'rgba(0, 0, 0, 0.75)';
         this.context.fillRect(0, 0, this.width, this.height);
 
