@@ -9,6 +9,13 @@ export default class View {
         '7': 'red'
     };
 
+    static screens = {
+        'start': 0,
+        'main': 1,
+        'pause': 2,
+        'gameOver': 3
+    };
+
     constructor(element, width, height, rows, columns) {
         this.element = element;
         this.width = width;
@@ -34,6 +41,7 @@ export default class View {
         this.panelWidth = this.width / 3;
         this.panelHeight = this.height;
 
+        this.currentScreen = null;
 
         this.element.appendChild(this.canvas);
     }
@@ -42,6 +50,8 @@ export default class View {
         this.clearScreen();
         this.renderPlayfield(state);
         this.renderPanel(state);
+
+        this.currentScreen = View.screens.main;
     }
 
     renderStartScreen() {
@@ -50,6 +60,8 @@ export default class View {
         this.context.textAlign = 'center';
         this.context.textBaseline = 'middle';
         this.context.fillText('Press ENTER to Start', this.width / 2, this.height / 2);
+
+        this.currentScreen = View.screens.start;
     }
 
     renderPauseScreen() {
@@ -61,6 +73,8 @@ export default class View {
         this.context.textAlign = 'center';
         this.context.textBaseline = 'middle';
         this.context.fillText('Press ENTER to Resume', this.width / 2, this.height / 2);
+
+        this.currentScreen = View.screens.pause;
     }
 
     renderEndScreen({ score }) {
@@ -73,6 +87,8 @@ export default class View {
         this.context.fillText('GAME OVER', this.width / 2, this.height / 2 - 48);
         this.context.fillText(`Score: ${score}`, this.width / 2, this.height / 2);
         this.context.fillText('Press ENTER to Restart', this.width / 2, this.height / 2 + 48);
+
+        this.currentScreen = View.screens.gameOver;
     }
 
     clearScreen() {
@@ -139,5 +155,9 @@ export default class View {
 
         this.context.fillRect(x, y, width, height);
         this.context.strokeRect(x, y, width, height);
+    }
+
+    isPauseScreen() {
+        return this.currentScreen === View.screens.pause;
     }
 }

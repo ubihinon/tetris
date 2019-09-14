@@ -7,7 +7,6 @@ export default class Controller {
         this.intervalId = null;
         this.isPlaying = false;
 
-
         document.addEventListener('keydown', this.handleKeyDown.bind(this));
         document.addEventListener('keyup', this.handleKeyUp.bind(this));
 
@@ -42,7 +41,9 @@ export default class Controller {
         if (state.isGameOver) {
             this.view.renderEndScreen(state);
         } else if (!this.isPlaying) {
-            this.view.renderPauseScreen();
+            if (!this.view.isPauseScreen()) {
+                this.view.renderPauseScreen();
+            }
         } else {
             this.view.renderMainScreen(state);
         }
