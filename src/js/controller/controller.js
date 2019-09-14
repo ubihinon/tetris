@@ -1,3 +1,5 @@
+import * as KeyCode from 'keycode-js';
+
 export default class Controller {
     constructor(game, view) {
         this.game = game;
@@ -65,8 +67,9 @@ export default class Controller {
 
     handleKeyDown(event) {
         const state = this.game.getState();
+
         switch (event.keyCode) {
-            case 13:
+            case KeyCode.KEY_RETURN:
                 if (state.isGameOver) {
                     this.reset();
                 } else if (this.isPlaying) {
@@ -75,19 +78,19 @@ export default class Controller {
                     this.play();
                 }
                 break;
-            case 37:
+            case KeyCode.KEY_LEFT:
                 this.game.movePieceLeft();
                 this.updateView();
                 break;
-            case 38:
+            case KeyCode.KEY_UP:
                 this.game.rotatePiece();
                 this.updateView();
                 break;
-            case 39:
+            case KeyCode.KEY_RIGHT:
                 this.game.movePieceRight();
                 this.updateView();
                 break;
-            case 40:
+            case KeyCode.KEY_DOWN:
                 this.stopTimer();
                 this.game.movePieceDown();
                 this.updateView();
@@ -96,7 +99,7 @@ export default class Controller {
     }
 
     handleKeyUp(event) {
-        if (event.keyCode === 40) {
+        if (event.keyCode === KeyCode.KEY_DOWN) {
             this.startTimer();
         }
     }
