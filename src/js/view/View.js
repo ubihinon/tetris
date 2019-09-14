@@ -25,13 +25,10 @@ export default class View {
         this.canvas.height = this.height;
         this.context = this.canvas.getContext('2d');
 
-        this.playfieldBorderWidth = 4;
-        this.playfieldX = this.playfieldBorderWidth;
-        this.playfieldY = this.playfieldBorderWidth;
         this.playfieldWidth = this.width * 2 / 3;
         this.playfieldHeight = this.height;
-        this.playfieldInnerWidth = this.playfieldWidth - this.playfieldBorderWidth * 2;
-        this.playfieldInnerHeight = this.playfieldHeight - this.playfieldBorderWidth * 2;
+        this.playfieldInnerWidth = this.playfieldWidth;
+        this.playfieldInnerHeight = this.playfieldHeight;
 
         this.blockWidth = this.playfieldInnerWidth / columns;
         this.blockHeight = this.playfieldInnerHeight / rows;
@@ -100,6 +97,9 @@ export default class View {
     }
 
     renderPlayfield({ playfield }) {
+        this.context.fillStyle = 'rgba(102, 51, 153, 1)';
+        this.context.fillRect(0, 0, this.playfieldWidth, this.playfieldHeight);
+
         for (let y = 0; y < playfield.length; y++) {
             const line = playfield[y];
 
@@ -107,8 +107,8 @@ export default class View {
                 const block = line[x];
                 if (block) {
                     this.renderBlock(
-                        this.playfieldX + (x * this.blockWidth),
-                        this.playfieldY + (y * this.blockHeight),
+                        x * this.blockWidth,
+                        y * this.blockHeight,
                         this.blockWidth,
                         this.blockHeight,
                         View.colors[block]
@@ -116,22 +116,21 @@ export default class View {
                 }
             }
         }
-
-        this.context.strokeStyle = 'white';
-        this.context.lineWidth = this.playfieldBorderWidth;
-        this.context.strokeRect(0, 0, this.playfieldWidth, this.playfieldHeight);
     }
 
     renderPanel({ level, score, lines, nextPiece }) {
+        this.context.fillStyle = 'rgba(102, 51, 153, 0.3)';
+        this.context.fillRect(this.panelX - 10, 0, this.panelWidth, this.panelHeight);
+
         this.context.textAlign = 'start';
         this.context.textBaseline = 'top';
         this.context.fillStyle = 'White';
         this.context.font = '14px "Press Start 2P"';
 
-        this.context.fillText(`Score: ${score}`, this.panelX, this.playfieldY + 0);
-        this.context.fillText(`Lines: ${lines}`, this.panelX, this.playfieldY + 24);
-        this.context.fillText(`Level: ${level}`, this.panelX, this.playfieldY + 48);
-        this.context.fillText('Next:', this.panelX, this.playfieldY + 96);
+        this.context.fillText(`Score: ${score}`, this.panelX, 5);
+        this.context.fillText(`Lines: ${lines}`, this.panelX, 29);
+        this.context.fillText(`Level: ${level}`, this.panelX, 53);
+        this.context.fillText('Next:', this.panelX, 101);
 
         const figure_size = 0.5;
 

@@ -266,10 +266,8 @@ export default class Game {
 
     updateScore(clearedLines) {
         if (clearedLines > 0) {
-            console.log(this.level);
             this.score += Game.points[clearedLines] * (this.level + 1);
             this.lines += clearedLines;
-            console.log(this.score, this.lines, this.level);
         }
     }
 
