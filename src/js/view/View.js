@@ -97,8 +97,10 @@ export default class View {
     }
 
     renderPlayfield({ playfield }) {
+        let angle = 0;
         this.context.fillStyle = 'rgba(102, 51, 153, 1)';
         this.context.fillRect(0, 0, this.playfieldWidth, this.playfieldHeight);
+        // this.context.save();
 
         for (let y = 0; y < playfield.length; y++) {
             const line = playfield[y];
@@ -106,16 +108,34 @@ export default class View {
             for (let x = 0; x < line.length; x++) {
                 const block = line[x];
                 if (block) {
+                    // this.context.fillRect(x * this.blockWidth, y * this.blockHeight, this.blockWidth, this.blockHeight);
                     this.renderBlock(
                         x * this.blockWidth,
                         y * this.blockHeight,
                         this.blockWidth,
                         this.blockHeight,
                         View.colors[block]
-                    )
+                    );
                 }
             }
         }
+
+        setInterval(() => {
+            // this.context.clearRect(0, 0, this.playfieldWidth, this.playfieldHeight);
+            this.context.save();
+
+            this.context.rotate(angle);
+
+            if (angle >= 3.14) {
+                angle = 0;
+            }
+
+            angle = angle + .10;
+
+            this.context.restore();
+        },100);
+        // this.context.closePath();
+        // this.context.restore();
     }
 
     renderPanel({ level, score, lines, nextPiece }) {

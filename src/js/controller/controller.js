@@ -67,6 +67,10 @@ export default class Controller {
     handleKeyDown(event) {
         const state = this.game.getState();
 
+        if (event.keyCode !== KeyCode.KEY_RETURN && !this.isPlaying) {
+            return;
+        }
+
         switch (event.keyCode) {
             case KeyCode.KEY_RETURN:
                 if (state.isGameOver) {
@@ -98,7 +102,7 @@ export default class Controller {
     }
 
     handleKeyUp(event) {
-        if (event.keyCode === KeyCode.KEY_DOWN) {
+        if (event.keyCode === KeyCode.KEY_DOWN && this.isPlaying) {
             this.startTimer();
         }
     }
