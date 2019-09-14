@@ -257,7 +257,7 @@ export default class Game {
         }
 
         for (let index of lines) {
-            this.playfield.slice(index, 1);
+            this.playfield.splice(index, 1);
             this.playfield.unshift(new Array(columns).fill(0));
         }
 
