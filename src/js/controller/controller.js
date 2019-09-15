@@ -13,11 +13,6 @@ export default class Controller {
         this.view.renderStartScreen();
     }
 
-    update() {
-        this.game.movePieceDown();
-        this.updateView();
-    }
-
     play() {
         this.isPlaying = true;
         this.startTimer();
@@ -55,6 +50,11 @@ export default class Controller {
                 this.update();
             }, speed > 0 ? speed : 100);
         }
+    }
+
+    update() {
+        this.game.movePieceDown();
+        this.updateView();
     }
 
     stopTimer() {

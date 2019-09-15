@@ -179,6 +179,10 @@ export default class Game {
         }
     }
 
+    lockPiece() {
+        this.copyActivePieceToPlayfield(this.playfield)
+    }
+
     rotateBlocks(clockwise = true) {
         const blocks = this.activePiece.blocks;
         const length = blocks.length;
@@ -221,10 +225,6 @@ export default class Game {
         }
 
         return false;
-    }
-
-    lockPiece() {
-        this.copyActivePieceToPlayfield(this.playfield)
     }
 
     clearLines() {

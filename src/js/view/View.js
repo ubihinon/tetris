@@ -152,12 +152,11 @@ export default class View {
     }
 
     renderBlock(x, y, width, height, color) {
-        this.context.fillStyle = color;
-        this.context.strokeStyle = 'black';
-        this.context.lineWidth = 2;
-
+        let gradient = this.context.createRadialGradient(x, y,  5,x + width / 2, y + height / 2, 30);
+        gradient.addColorStop(0, color);
+        gradient.addColorStop(1, 'black');
+        this.context.fillStyle = gradient;
         this.context.fillRect(x, y, width, height);
-        this.context.strokeRect(x, y, width, height);
     }
 
     isPauseScreen() {
