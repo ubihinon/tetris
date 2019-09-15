@@ -10,39 +10,6 @@ export default class Game {
         this.reset();
     }
 
-    get level() {
-        return Math.floor(this.lines * 0.1);
-    }
-
-    getState() {
-        const playfield = this.createPlayfield();
-        const {y: pieceY, x: pieceX, blocks} = this.activePiece;
-
-        for (let y = 0; y < this.playfield.length; y++) {
-            playfield[y] = [];
-
-            for (let x = 0; x < this.playfield[y].length; x++) {
-                playfield[y][x] = this.playfield[y][x];
-            }
-        }
-
-        for (let y = 0; y < blocks.length; y++) {
-            for (let x = 0; x < blocks[y].length; x++) {
-                if (blocks[y][x]) {
-                    playfield[pieceY + y][pieceX + x] = blocks[y][x];
-                }
-            }
-        }
-
-        return {
-            score: this.score,
-            level: this.level,
-            lines: this.lines,
-            nextPiece: this.nextPiece,
-            playfield,
-            isGameOver: this.topOut
-        };
-    }
 
     reset() {
         this.score = 0;
@@ -51,6 +18,41 @@ export default class Game {
         this.playfield = this.createPlayfield();
         this.activePiece = this.createPiece();
         this.nextPiece = this.createPiece();
+    }
+
+    getState() {
+        return {
+            score: this.score,
+            level: this.level,
+            lines: this.lines,
+            nextPiece: this.nextPiece,
+            playfield: this.concatenatePlayfields(),
+            isGameOver: this.topOut
+        };
+    }
+
+    concatenatePlayfields() {
+        const playfield = this.createPlayfield();
+
+        for (let y = 0; y < this.playfield.length; y++) {
+            for (let x = 0; x < this.playfield[y].length; x++) {
+                playfield[y][x] = this.playfield[y][x];
+            }
+        }
+
+        return this.copyActivePieceToPlayfield(playfield);
+    }
+
+    copyActivePieceToPlayfield(playfield) {
+        const {y: pieceY, x: pieceX, blocks} = this.activePiece;
+        for (let y = 0; y < blocks.length; y++) {
+            for (let x = 0; x < blocks[y].length; x++) {
+                if (blocks[y][x]) {
+                    playfield[pieceY + y][pieceX + x] = blocks[y][x];
+                }
+            }
+        }
+        return playfield;
     }
 
     createPlayfield() {
@@ -222,15 +224,7 @@ export default class Game {
     }
 
     lockPiece() {
-        const {y: pieceY, x: pieceX, blocks} = this.activePiece;
-
-        for (let y = 0; y < blocks.length; y++) {
-            for (let x = 0; x < blocks[y].length; x++) {
-                if (blocks[y][x]) {
-                    this.playfield[pieceY + y][pieceX + x] = blocks[y][x];
-                }
-            }
-        }
+        this.copyActivePieceToPlayfield(this.playfield)
     }
 
     clearLines() {
@@ -275,4 +269,9 @@ export default class Game {
         this.activePiece = this.nextPiece;
         this.nextPiece = this.createPiece();
     }
+
+    get level() {
+        return Math.floor(this.lines * 0.1);
+    }
+
 }
