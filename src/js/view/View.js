@@ -152,7 +152,7 @@ export default class View {
     }
 
     renderBlock(x, y, width, height, color) {
-        let gradient = this.context.createRadialGradient(x, y,  5,x + width / 2, y + height / 2, 30);
+        let gradient = this.context.createRadialGradient(x, y, 5, x + width / 2, y + height / 2, 30);
         gradient.addColorStop(0, color);
         gradient.addColorStop(1, 'black');
         this.context.fillStyle = gradient;
