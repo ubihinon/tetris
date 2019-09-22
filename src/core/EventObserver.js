@@ -22,7 +22,7 @@ export default class EventObserver extends Events {
     notify(name, data) {
         let res = null;
         this.observers.forEach(subscriber => {
-            if (super.hasAvailable(this.emitter, subscriber.getClassName(), name) && subscriber[name](data)) {
+            if (super.hasAvailable(this.emitter, subscriber.className, name) && subscriber[name](data)) {
                 res = subscriber[name](data);
             }
         });

@@ -50,6 +50,18 @@ export default class View extends EventObserver {
         this.renderStartScreen();
     }
 
+    updateView() {
+        const state = this.notify('getState');
+
+        if (state.isGameOver) {
+            this.renderEndScreen(state);
+        } else if (!state.isPlaying) {
+            this.renderPauseScreen();
+        } else {
+            this.renderMainScreen(state);
+        }
+    }
+
     renderMainScreen(state) {
         this.clearScreen();
         this.renderPlayfield(state);
@@ -170,7 +182,7 @@ export default class View extends EventObserver {
         return this.currentScreen === View.screens.pause;
     }
 
-    getClassName() {
+    get className() {
         return this.constructor.name;
     }
 }

@@ -1,14 +1,17 @@
 export default class Events {
     events = {
         View: {
-            Controller: []
+            Controller: ['getState']
         },
         Game: {
-            Controller: []
+            Controller: ['getState', 'update']
         },
         Controller: {
-            View: ['renderEndScreen', 'renderMainScreen', 'renderPauseScreen'],
-            Game: ['getState', 'movePieceLeft', 'movePieceRight', 'movePieceDown', 'rotatePiece', 'reset']
+            View: ['updateView'],
+            Game: [
+                'getState', 'movePieceLeft', 'movePieceRight', 'movePieceDown', 'rotatePiece',
+                'reset', 'play', 'pause', 'startTimer', 'stopTimer'
+            ]
         },
     };
 

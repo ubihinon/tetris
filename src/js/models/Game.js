@@ -10,7 +10,39 @@ export default class Game extends EventObserver {
 
     constructor() {
         super();
+        this.addEmitter(this.constructor.name);
+
         this.reset();
+
+        this.intervalId = null;
+        this.isPlaying = false;
+    }
+
+    play() {
+        this.isPlaying = true;
+        this.startTimer();
+    }
+
+    pause() {
+        this.isPlaying = false;
+        this.stopTimer();
+    }
+
+    stopTimer() {
+        if (this.intervalId) {
+            clearInterval(this.intervalId);
+            this.intervalId = null;
+        }
+    }
+
+    startTimer() {
+        const speed = 1000 - this.notify('getState').level * 100;
+
+        if (!this.intervalId) {
+            this.intervalId = setInterval(() => {
+                this.notify('update');
+            }, speed > 0 ? speed : 100);
+        }
     }
 
     reset() {
@@ -29,7 +61,8 @@ export default class Game extends EventObserver {
             lines: this.lines,
             nextPiece: this.nextPiece,
             playfield: this.concatenatePlayfields(),
-            isGameOver: this.topOut
+            isGameOver: this.topOut,
+            isPlaying: this.isPlaying
         };
     }
 
@@ -276,7 +309,7 @@ export default class Game extends EventObserver {
         return Math.floor(this.lines * 0.1);
     }
 
-    getClassName() {
+    get className() {
         return this.constructor.name;
     }
 }
