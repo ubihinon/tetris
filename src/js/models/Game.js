@@ -1,4 +1,6 @@
-export default class Game {
+import EventObserver from "../../core/EventObserver";
+
+export default class Game extends EventObserver {
     static points = {
         '1': 40,
         '2': 100,
@@ -7,9 +9,9 @@ export default class Game {
     };
 
     constructor() {
+        super();
         this.reset();
     }
-
 
     reset() {
         this.score = 0;
@@ -274,4 +276,7 @@ export default class Game {
         return Math.floor(this.lines * 0.1);
     }
 
+    getClassName() {
+        return this.constructor.name;
+    }
 }

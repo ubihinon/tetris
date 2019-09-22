@@ -1,4 +1,6 @@
-export default class View {
+import EventObserver from "../../core/EventObserver";
+
+export default class View extends EventObserver {
     static colors = {
         '1': 'cyan',
         '2': 'blue',
@@ -17,6 +19,9 @@ export default class View {
     };
 
     constructor(element, width, height, rows, columns) {
+        super();
+        super.addEmitter(this.constructor.name);
+
         this.element = element;
         this.width = width;
         this.height = height;
@@ -41,6 +46,8 @@ export default class View {
         this.currentScreen = null;
 
         this.element.appendChild(this.canvas);
+
+        this.renderStartScreen();
     }
 
     renderMainScreen(state) {
@@ -161,5 +168,9 @@ export default class View {
 
     isPauseScreen() {
         return this.currentScreen === View.screens.pause;
+    }
+
+    getClassName() {
+        return this.constructor.name;
     }
 }

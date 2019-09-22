@@ -31,7 +31,7 @@ const common = merge([
                 favicons: {
                     appName: "Tetris",
                     appDescription: "Tetris",
-                    developerName: "Vladimir",
+                    developerName: "Vladimir Nosov",
                     developerURL: null,
                     background: "#ddd",
                     theme_color: "#333",
@@ -44,7 +44,6 @@ const common = merge([
 ]);
 
 module.exports = (env) => {
-    console.log(env);
     if (env === "production") {
         return merge([common])
     } else if (env === "development") {

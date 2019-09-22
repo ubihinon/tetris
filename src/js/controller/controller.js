@@ -1,16 +1,16 @@
 import * as KeyCode from 'keycode-js';
+import EventObserver from "../../core/EventObserver";
 
-export default class Controller {
-    constructor(game, view) {
-        this.game = game;
-        this.view = view;
+export default class Controller extends EventObserver {
+    constructor() {
+        super();
+        super.addEmitter(this.constructor.name);
+
         this.intervalId = null;
         this.isPlaying = false;
 
         document.addEventListener('keydown', this.handleKeyDown.bind(this));
         document.addEventListener('keyup', this.handleKeyUp.bind(this));
-
-        this.view.renderStartScreen();
     }
 
     play() {
@@ -26,24 +26,24 @@ export default class Controller {
     }
 
     reset() {
-        this.game.reset();
+        this.notify('reset');
         this.play();
     }
 
     updateView() {
-        const state = this.game.getState();
+        const state = this.notify('getState');
 
         if (state.isGameOver) {
-            this.view.renderEndScreen(state);
+            this.notify('renderEndScreen', state);
         } else if (!this.isPlaying) {
-            this.view.renderPauseScreen();
+            this.notify('renderPauseScreen');
         } else {
-            this.view.renderMainScreen(state);
+            this.notify('renderMainScreen', state);
         }
     }
 
     startTimer() {
-        const speed = 1000 - this.game.getState().level * 100;
+        const speed = 1000 - this.notify('getState').level * 100;
 
         if (!this.intervalId) {
             this.intervalId = setInterval(() => {
@@ -53,7 +53,7 @@ export default class Controller {
     }
 
     update() {
-        this.game.movePieceDown();
+        this.notify('movePieceDown');
         this.updateView();
     }
 
@@ -65,8 +65,7 @@ export default class Controller {
     }
 
     handleKeyDown(event) {
-        const state = this.game.getState();
-
+        const state = this.notify('getState');
         if (event.keyCode !== KeyCode.KEY_RETURN && !this.isPlaying) {
             return;
         }
@@ -82,20 +81,20 @@ export default class Controller {
                 }
                 break;
             case KeyCode.KEY_LEFT:
-                this.game.movePieceLeft();
+                this.notify('movePieceLeft');
                 this.updateView();
                 break;
             case KeyCode.KEY_UP:
-                this.game.rotatePiece();
+                this.notify('rotatePiece');
                 this.updateView();
                 break;
             case KeyCode.KEY_RIGHT:
-                this.game.movePieceRight();
+                this.notify('movePieceRight');
                 this.updateView();
                 break;
             case KeyCode.KEY_DOWN:
                 this.stopTimer();
-                this.game.movePieceDown();
+                this.notify('movePieceDown');
                 this.updateView();
                 break;
         }
@@ -105,5 +104,9 @@ export default class Controller {
         if (event.keyCode === KeyCode.KEY_DOWN && this.isPlaying) {
             this.startTimer();
         }
+    }
+
+    getClassName() {
+        return this.constructor.name;
     }
 }
