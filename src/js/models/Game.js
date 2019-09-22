@@ -188,6 +188,7 @@ export default class Game extends EventObserver {
 
     movePieceDown() {
         if (this.topOut) {
+            this.saveBestScore();
             return;
         }
 
@@ -303,6 +304,20 @@ export default class Game extends EventObserver {
     updatePieces() {
         this.activePiece = this.nextPiece;
         this.nextPiece = this.createPiece();
+    }
+
+    saveBestScore() {
+        if (this.score === 0) {
+            return;
+        }
+
+        if (this.score > this.getBestScore() || !this.getBestScore()) {
+            localStorage.setItem('bestScore', this.score);
+        }
+    }
+
+    getBestScore() {
+        return localStorage.getItem('bestScore');
     }
 
     get level() {

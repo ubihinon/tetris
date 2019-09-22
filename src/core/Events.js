@@ -1,7 +1,7 @@
 export default class Events {
     events = {
         View: {
-            Controller: ['getState']
+            Controller: ['getState', 'getBestScore']
         },
         Game: {
             Controller: ['getState', 'update']
@@ -10,7 +10,7 @@ export default class Events {
             View: ['updateView'],
             Game: [
                 'getState', 'movePieceLeft', 'movePieceRight', 'movePieceDown', 'rotatePiece',
-                'reset', 'play', 'pause', 'startTimer', 'stopTimer'
+                'reset', 'play', 'pause', 'startTimer', 'stopTimer', 'getBestScore'
             ]
         },
     };

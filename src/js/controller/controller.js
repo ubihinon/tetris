@@ -73,6 +73,10 @@ export default class Controller extends EventObserver {
         this.notify('updateView');
     }
 
+    getBestScore() {
+        return this.notify('getBestScore')
+    }
+
     getState() {
         return this.notify('getState');
     }
