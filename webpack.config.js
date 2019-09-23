@@ -2,8 +2,9 @@ const path = require("path");
 const merge = require("webpack-merge");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
-const css = require("./webpack/css");
 const babel = require("./webpack/babel");
+const fonts = require("./webpack/fonts");
+const css = require("./webpack/css");
 const devServer = require("./webpack/devserver");
 
 const PATHS = {
@@ -13,7 +14,10 @@ const PATHS = {
 
 const common = merge([
     {
-        entry: ["@babel/polyfill", "./src/js/index.js"],
+        entry: [
+            "@babel/polyfill",
+            `${PATHS.src}/js/index.js`
+        ],
         output: {
             path: PATHS.build,
             filename: "js/bundle.js"
@@ -40,6 +44,7 @@ const common = merge([
         ],
     },
     babel(),
+    fonts(),
     css(),
 ]);
 

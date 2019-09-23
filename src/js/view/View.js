@@ -1,6 +1,15 @@
 import EventObserver from "../../core/EventObserver";
 
 export default class View extends EventObserver {
+    static constants = {
+        'font':  '18px "Comic Sans MS"',
+        'fontColor':  'white',
+        'textAlignCenter': 'center',
+        'textAlignStart': 'start',
+        'textBaselineMiddle': 'middle',
+        'textBaselineTop': 'top'
+    };
+
     static colors = {
         '1': 'cyan',
         '2': 'blue',
@@ -71,10 +80,10 @@ export default class View extends EventObserver {
     }
 
     renderStartScreen() {
-        this.context.fillStyle = 'white';
-        this.context.font = '18px "Press Start 2P"';
-        this.context.textAlign = 'center';
-        this.context.textBaseline = 'middle';
+        this.context.fillStyle = View.constants.fontColor;
+        this.context.font = View.constants.font;
+        this.context.textAlign = View.constants.textAlignCenter;
+        this.context.textBaseline = View.constants.textBaselineMiddle;
         this.context.fillText('Press ENTER to Start', this.width / 2, this.height / 2);
 
         this.currentScreen = View.screens.start;
@@ -88,10 +97,10 @@ export default class View extends EventObserver {
         this.context.fillStyle = 'rgba(0, 0, 0, 0.75)';
         this.context.fillRect(0, 0, this.width, this.height);
 
-        this.context.fillStyle = 'white';
-        this.context.font = '18px "Press Start 2P"';
-        this.context.textAlign = 'center';
-        this.context.textBaseline = 'middle';
+        this.context.fillStyle = View.constants.fontColor;
+        this.context.font = View.constants.font;
+        this.context.textAlign = View.constants.textAlignCenter;
+        this.context.textBaseline = View.constants.textBaselineMiddle;
         this.context.fillText('Press ENTER to Resume', this.width / 2, this.height / 2);
 
         this.currentScreen = View.screens.pause;
@@ -102,10 +111,11 @@ export default class View extends EventObserver {
 
         let bestScore = this.notify('getBestScore');
 
-        this.context.fillStyle = 'white';
-        this.context.font = '18px "Press Start 2P"';
-        this.context.textAlign = 'center';
-        this.context.textBaseline = 'middle';
+        this.context.fillStyle = View.constants.fontColor;
+        this.context.font = View.constants.font;
+        this.context.textAlign = View.constants.textAlignCenter;
+        this.context.textBaseline = View.constants.textBaselineMiddle;
+
         this.context.fillText('GAME OVER', this.width / 2, this.height / 2 - 48);
         this.context.fillText(`Score: ${score}`, this.width / 2, this.height / 2);
         this.context.fillText('Press ENTER to Restart', this.width / 2, this.height / 2 + 48);
@@ -147,17 +157,17 @@ export default class View extends EventObserver {
         this.context.fillStyle = 'rgba(102, 51, 153, 0.3)';
         this.context.fillRect(this.panelX - 10, 0, this.panelWidth, this.panelHeight);
 
-        this.context.textAlign = 'start';
-        this.context.textBaseline = 'top';
-        this.context.fillStyle = 'White';
-        this.context.font = '14px "Press Start 2P"';
+        this.context.textAlign = View.constants.textAlignStart;
+        this.context.textBaseline = View.constants.textBaselineTop;
+        this.context.fillStyle = View.constants.fontColor;
+        this.context.font = View.constants.font;
 
         this.context.fillText(`Score: ${score}`, this.panelX, 5);
         this.context.fillText(`Lines: ${lines}`, this.panelX, 29);
         this.context.fillText(`Level: ${level}`, this.panelX, 53);
         this.context.fillText('Next:', this.panelX, 101);
 
-        const figure_size = 0.5;
+        const scale = 0.8;
 
         for (let y = 0; y < nextPiece.blocks.length; y++) {
             for (let x = 0; x < nextPiece.blocks[y].length; x++) {
@@ -165,10 +175,10 @@ export default class View extends EventObserver {
 
                 if (block) {
                     this.renderBlock(
-                        this.panelX + (x * this.blockWidth * figure_size),
-                        this.panelY + 100 + (y * this.blockHeight * figure_size),
-                        this.blockWidth * figure_size,
-                        this.blockHeight * figure_size,
+                        this.panelX + (x * this.blockWidth * scale),
+                        this.panelY + 110 + (y * this.blockHeight * scale),
+                        this.blockWidth * scale,
+                        this.blockHeight * scale,
                         View.colors[block]
                     );
                 }

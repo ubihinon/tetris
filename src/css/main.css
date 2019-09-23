@@ -1,17 +1,30 @@
 body {
     background: black;
+    font-family: "Comic Sans MS";
+}
+
+@font-face {
+    font-family: "Comic Sans MS";
+    src: url("../fonts/COMIC.woff") format("woff"),
+         url("../fonts/comici.woff") format("woff"),
+         url("../fonts/ComicSansMS3.woff") format("woff"),
+         url("../fonts/comicz.woff") format("woff"),
+         url("../fonts/design.graffiti.comicsansms.woff") format("woff"),
+         url("../fonts/design.graffiti.comicsansmsgras.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
 }
 
 .header {
     color: rebeccapurple;
     margin: auto;
-    font-family: "Comic Sans MS";
+    display: table;
     width: fit-content;
     text-transform: uppercase;
 }
 
 #canvas-container {
-    text-align:center;
+    text-align: center;
 }
 
 canvas {
