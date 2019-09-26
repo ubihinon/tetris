@@ -5,6 +5,7 @@ const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 const babel = require("./webpack/babel");
 const fonts = require("./webpack/fonts");
 const css = require("./webpack/css");
+const audio = require("./webpack/audio");
 const devServer = require("./webpack/devserver");
 
 const PATHS = {
@@ -46,6 +47,7 @@ const common = merge([
     babel(),
     fonts(),
     css(),
+    audio(),
 ]);
 
 module.exports = (env) => {
