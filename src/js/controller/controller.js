@@ -1,5 +1,5 @@
 import * as KeyCode from 'keycode-js';
-import EventObserver from "../../core/EventObserver";
+import EventObserver from "../../core/observer/EventObserver";
 
 export default class Controller extends EventObserver {
     constructor() {
@@ -71,6 +71,10 @@ export default class Controller extends EventObserver {
     update() {
         this.notify('movePieceDown');
         this.notify('updateView');
+    }
+
+    lineDeleting() {
+        this.notify('playLineDeleting');
     }
 
     getBestScore() {

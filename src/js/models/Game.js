@@ -1,4 +1,4 @@
-import EventObserver from "../../core/EventObserver";
+import EventObserver from "../../core/observer/EventObserver";
 
 export default class Game extends EventObserver {
     static points = {
@@ -189,6 +189,7 @@ export default class Game extends EventObserver {
     movePieceDown() {
         if (this.topOut) {
             this.saveBestScore();
+            this.stopTimer();
             return;
         }
 
@@ -203,6 +204,7 @@ export default class Game extends EventObserver {
         }
 
         if (this.hasCollision()) {
+            this.stopTimer();
             this.topOut = true;
         }
     }
@@ -282,6 +284,7 @@ export default class Game extends EventObserver {
             } else if (numberOfBlocks < columns) {
                 continue;
             } else if (numberOfBlocks === columns) {
+                this.notify('lineDeleting');
                 lines.unshift(y);
             }
         }

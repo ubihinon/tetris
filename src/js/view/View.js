@@ -1,9 +1,11 @@
-import EventObserver from "../../core/EventObserver";
+import EventObserver from "../../core/observer/EventObserver";
+import GameSound from "./GameSound";
+
 
 export default class View extends EventObserver {
     static constants = {
-        'font':  '18px "Comic Sans MS"',
-        'fontColor':  'white',
+        'font': '18px "Comic Sans MS"',
+        'fontColor': 'white',
         'textAlignCenter': 'center',
         'textAlignStart': 'start',
         'textBaselineMiddle': 'middle',
@@ -56,6 +58,8 @@ export default class View extends EventObserver {
 
         this.element.appendChild(this.canvas);
 
+        this.sound = new GameSound();
+
         this.renderStartScreen();
     }
 
@@ -63,6 +67,9 @@ export default class View extends EventObserver {
         const state = this.notify('getState');
 
         if (state.isGameOver) {
+            if (!this.isEndScreen()) {
+                this.sound.playGameOver();
+            }
             this.renderEndScreen(state);
         } else if (!state.isPlaying) {
             this.renderPauseScreen();
@@ -194,8 +201,16 @@ export default class View extends EventObserver {
         this.context.fillRect(x, y, width, height);
     }
 
+    playLineDeleting() {
+        this.sound.playLineDeleting();
+    }
+
     isPauseScreen() {
         return this.currentScreen === View.screens.pause;
+    }
+
+    isEndScreen() {
+        return this.currentScreen === View.screens.gameOver;
     }
 
     get className() {

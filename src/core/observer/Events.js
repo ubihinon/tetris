@@ -4,10 +4,10 @@ export default class Events {
             Controller: ['getState', 'getBestScore']
         },
         Game: {
-            Controller: ['getState', 'update']
+            Controller: ['getState', 'update', 'lineDeleting']
         },
         Controller: {
-            View: ['updateView'],
+            View: ['updateView', 'playLineDeleting'],
             Game: [
                 'getState', 'movePieceLeft', 'movePieceRight', 'movePieceDown', 'rotatePiece',
                 'reset', 'play', 'pause', 'startTimer', 'stopTimer', 'getBestScore'
