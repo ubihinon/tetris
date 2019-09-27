@@ -2,9 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title><%= htmlWebpackPlugin.options.title %></title>
 </head>
 <body>
-
+<div>
+    <h1 class="header"><%= htmlWebpackPlugin.options.title %></h1>
+    <div id="canvas-container">
+        <canvas id="playfield"></canvas>
+    </div>
+</div>
 </body>
 </html>
