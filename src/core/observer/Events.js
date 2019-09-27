@@ -16,7 +16,6 @@ export default class Events {
     };
 
     hasAvailable(emitter, observer, method) {
-        console.log(`Emitter: ${emitter}, observer: ${observer}, method: ${method}`);
         return this.events[emitter][observer].some(elem => elem === method);
     }
 }

@@ -1,17 +1,8 @@
 import EventObserver from "../../core/observer/EventObserver";
 import GameSound from "./GameSound";
-
+import {screens, ui_constants} from "./constants"
 
 export default class View extends EventObserver {
-    static constants = {
-        'font': '18px "Comic Sans MS"',
-        'fontColor': 'white',
-        'textAlignCenter': 'center',
-        'textAlignStart': 'start',
-        'textBaselineMiddle': 'middle',
-        'textBaselineTop': 'top'
-    };
-
     static colors = {
         '1': 'cyan',
         '2': 'blue',
@@ -22,45 +13,66 @@ export default class View extends EventObserver {
         '7': 'red'
     };
 
-    static screens = {
-        'start': 0,
-        'main': 1,
-        'pause': 2,
-        'gameOver': 3
-    };
-
-    constructor(element, width, height, rows, columns) {
+    constructor(width, height, rows, columns) {
         super();
         super.addEmitter(this.constructor.name);
 
-        this.element = element;
         this.width = width;
         this.height = height;
-        this.canvas = document.createElement('canvas');
-        this.canvas.width = this.width;
-        this.canvas.height = this.height;
+
+        this.canvas = document.getElementById('playfield');
+
+        this.initCanvasSize();
+        this.initPlayfieldSize();
+        this.initBlockSize(rows, columns);
+        this.initPanelSize();
+
         this.context = this.canvas.getContext('2d');
 
+        this.currentScreen = null;
+        this.sound = new GameSound();
+
+        this.renderStartScreen();
+
+        this.resizeCanvasSize();
+    }
+
+    initCanvasSize() {
+        this.canvas.width = this.width;
+        this.canvas.height = this.height;
+    }
+
+    initPlayfieldSize() {
         this.playfieldWidth = this.width * 2 / 3;
         this.playfieldHeight = this.height;
         this.playfieldInnerWidth = this.playfieldWidth;
         this.playfieldInnerHeight = this.playfieldHeight;
+    }
 
-        this.blockWidth = this.playfieldInnerWidth / columns;
-        this.blockHeight = this.playfieldInnerHeight / rows;
-
+    initPanelSize() {
         this.panelX = this.playfieldWidth + 10;
         this.panelY = 0;
         this.panelWidth = this.width / 3;
         this.panelHeight = this.height;
+    }
 
-        this.currentScreen = null;
+    initBlockSize(rows, columns) {
+        this.blockWidth = this.playfieldInnerWidth / columns;
+        this.blockHeight = this.playfieldInnerHeight / rows;
+    }
 
-        this.element.appendChild(this.canvas);
+    resizeCanvasSize() {
+        let ratio = this.canvas.width / this.canvas.height;
+        let canvasHeight = window.innerHeight - 50;
+        let canvasWidth = canvasHeight * ratio;
 
-        this.sound = new GameSound();
+        if (canvasWidth > window.innerWidth) {
+            canvasWidth = window.innerWidth;
+            canvasHeight = canvasWidth / ratio;
+        }
 
-        this.renderStartScreen();
+        this.canvas.style.width = `${canvasWidth}px`;
+        this.canvas.style.height = `${canvasHeight}px`;
     }
 
     updateView() {
@@ -78,22 +90,22 @@ export default class View extends EventObserver {
         }
     }
 
+    renderStartScreen() {
+        this.setFont();
+        this.context.textAlign = ui_constants.TEXT_ALIGN_CENTER;
+        this.context.textBaseline = ui_constants.TEXT_BASELINE_MIDDLE;
+
+        this.context.fillText('Press ENTER to Start', this.width / 2, this.height / 2);
+
+        this.currentScreen = screens.START;
+    }
+
     renderMainScreen(state) {
         this.clearScreen();
         this.renderPlayfield(state);
         this.renderPanel(state);
 
-        this.currentScreen = View.screens.main;
-    }
-
-    renderStartScreen() {
-        this.context.fillStyle = View.constants.fontColor;
-        this.context.font = View.constants.font;
-        this.context.textAlign = View.constants.textAlignCenter;
-        this.context.textBaseline = View.constants.textBaselineMiddle;
-        this.context.fillText('Press ENTER to Start', this.width / 2, this.height / 2);
-
-        this.currentScreen = View.screens.start;
+        this.currentScreen = screens.MAIN;
     }
 
     renderPauseScreen() {
@@ -104,13 +116,13 @@ export default class View extends EventObserver {
         this.context.fillStyle = 'rgba(0, 0, 0, 0.75)';
         this.context.fillRect(0, 0, this.width, this.height);
 
-        this.context.fillStyle = View.constants.fontColor;
-        this.context.font = View.constants.font;
-        this.context.textAlign = View.constants.textAlignCenter;
-        this.context.textBaseline = View.constants.textBaselineMiddle;
+        this.setFont();
+        this.context.textAlign = ui_constants.TEXT_ALIGN_CENTER;
+        this.context.textBaseline = ui_constants.TEXT_BASELINE_MIDDLE;
+
         this.context.fillText('Press ENTER to Resume', this.width / 2, this.height / 2);
 
-        this.currentScreen = View.screens.pause;
+        this.currentScreen = screens.PAUSE;
     }
 
     renderEndScreen({score}) {
@@ -118,10 +130,9 @@ export default class View extends EventObserver {
 
         let bestScore = this.notify('getBestScore');
 
-        this.context.fillStyle = View.constants.fontColor;
-        this.context.font = View.constants.font;
-        this.context.textAlign = View.constants.textAlignCenter;
-        this.context.textBaseline = View.constants.textBaselineMiddle;
+        this.setFont();
+        this.context.textAlign = ui_constants.TEXT_ALIGN_CENTER;
+        this.context.textBaseline = ui_constants.TEXT_BASELINE_MIDDLE;
 
         this.context.fillText('GAME OVER', this.width / 2, this.height / 2 - 48);
         this.context.fillText(`Score: ${score}`, this.width / 2, this.height / 2);
@@ -131,7 +142,7 @@ export default class View extends EventObserver {
             this.context.fillText(`Best score: ${bestScore}`, this.width / 2, this.height / 2 + 96);
         }
 
-        this.currentScreen = View.screens.gameOver;
+        this.currentScreen = screens.GAME_OVER;
     }
 
     clearScreen() {
@@ -164,10 +175,10 @@ export default class View extends EventObserver {
         this.context.fillStyle = 'rgba(102, 51, 153, 0.3)';
         this.context.fillRect(this.panelX - 10, 0, this.panelWidth, this.panelHeight);
 
-        this.context.textAlign = View.constants.textAlignStart;
-        this.context.textBaseline = View.constants.textBaselineTop;
-        this.context.fillStyle = View.constants.fontColor;
-        this.context.font = View.constants.font;
+        this.setFont();
+        this.context.textAlign = ui_constants.TEXT_ALIGN_START;
+        this.context.textBaseline = ui_constants.TEXT_BASELINE_TOP;
+
 
         this.context.fillText(`Score: ${score}`, this.panelX, 5);
         this.context.fillText(`Lines: ${lines}`, this.panelX, 29);
@@ -193,6 +204,11 @@ export default class View extends EventObserver {
         }
     }
 
+    setFont() {
+        this.context.fillStyle = ui_constants.FONT_COLOR;
+        this.context.font = ui_constants.FONT;
+    }
+
     renderBlock(x, y, width, height, color) {
         let gradient = this.context.createRadialGradient(x, y, 5, x + width / 2, y + height / 2, 30);
         gradient.addColorStop(0, color);
@@ -206,11 +222,11 @@ export default class View extends EventObserver {
     }
 
     isPauseScreen() {
-        return this.currentScreen === View.screens.pause;
+        return this.currentScreen === screens.PAUSE;
     }
 
     isEndScreen() {
-        return this.currentScreen === View.screens.gameOver;
+        return this.currentScreen === screens.GAME_OVER;
     }
 
     get className() {
