@@ -18,6 +18,14 @@ export default class Game extends EventObserver {
     this.isPlaying = false;
   }
 
+  get level() {
+    return Math.floor(this.lines * 0.1);
+  }
+
+  get className() {
+    return this.constructor.name;
+  }
+
   play() {
     this.isPlaying = true;
     this.startTimer();
@@ -50,8 +58,8 @@ export default class Game extends EventObserver {
     this.lines = 0;
     this.topOut = false;
     this.playfield = this.createPlayfield();
-    this.activePiece = this.createPiece();
-    this.nextPiece = this.createPiece();
+    this.activePiece = this.createRandomPiece();
+    this.nextPiece = this.createRandomPiece();
   }
 
   getState() {
@@ -103,9 +111,14 @@ export default class Game extends EventObserver {
     return playfield;
   }
 
-  createPiece() {
+  createRandomPiece() {
     const index = Math.floor(Math.random() * 7);
     const type = 'IJLOSTZ'[index];
+
+    return this.createPiece(type);
+  }
+
+  createPiece(type) {
     const piece = {};
 
     switch (type) {
@@ -302,7 +315,7 @@ export default class Game extends EventObserver {
 
   updatePieces() {
     this.activePiece = this.nextPiece;
-    this.nextPiece = this.createPiece();
+    this.nextPiece = this.createRandomPiece();
   }
 
   saveBestScore() {
@@ -317,13 +330,5 @@ export default class Game extends EventObserver {
 
   getBestScore() {
     return localStorage.getItem('bestScore');
-  }
-
-  get level() {
-    return Math.floor(this.lines * 0.1);
-  }
-
-  get className() {
-    return this.constructor.name;
   }
 }

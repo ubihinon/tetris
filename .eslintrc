@@ -5,6 +5,7 @@
   ],
   "env": {
     "browser": true,
+    "mocha": true,
     "es6": true
   },
   "rules": {
@@ -12,6 +13,7 @@
     "no-param-reassign": "off",
     "no-new": "off",
     "no-plusplus": "off",
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "global-require": "off"
   }
 }
