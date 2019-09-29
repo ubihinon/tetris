@@ -46,7 +46,7 @@ describe('Game', () => {
     ];
   }
 
-  function createFigureVertivalS() {
+  function createFigureVerticalS() {
     return [
       [5, 0, 0],
       [5, 5, 0],
@@ -62,7 +62,7 @@ describe('Game', () => {
 
   it('concatenatePlayfields', () => {
     game.activePiece = {
-      blocks: createFigureVertivalS(),
+      blocks: createFigureVerticalS(),
       x: 6,
       y: 14,
     };
@@ -259,7 +259,7 @@ describe('Game', () => {
 
     assert.equal(game.activePiece.x, 3);
     assert.equal(game.activePiece.y, 15);
-    assertEqualMatrix(game.activePiece.blocks, createFigureVertivalS());
+    assertEqualMatrix(game.activePiece.blocks, createFigureVerticalS());
   });
 
   it('rotatePiece collision', () => {
