@@ -1,7 +1,5 @@
-module.exports = function () {
-    return {
-        devServer: {
-            contentBase: "./dist"
-        },
-    };
-};
+module.exports = () => ({
+  devServer: {
+    contentBase: './dist',
+  },
+});
