@@ -1,5 +1,6 @@
 const path = require('path');
 const merge = require('webpack-merge');
+const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const babel = require('./webpack/babel');
@@ -23,6 +24,17 @@ const common = merge([
       path: PATHS.build,
       filename: 'js/bundle.js',
     },
+    optimization: {
+      minimize: true,
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            keep_classnames: true,
+            keep_fnames: true,
+          },
+        }),
+      ],
+    },
     plugins: [
       new HtmlWebpackPlugin({
         filename: 'index.html',
@@ -33,6 +45,8 @@ const common = merge([
         logo: './favicon.png',
         cache: true,
         inject: true,
+        prefix: './assets',
+        path: './assets',
         favicons: {
           appName: 'Tetris',
           appDescription: 'Tetris',
@@ -53,7 +67,8 @@ const common = merge([
 module.exports = (env) => {
   if (env === 'production') {
     return merge([common]);
-  } if (env === 'development') {
+  }
+  if (env === 'development') {
     return merge([
       common,
       devServer(),
