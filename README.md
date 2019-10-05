@@ -20,3 +20,13 @@ npm run start
 ```
 npm run build
 ```
+### Tests
+```
+npm run test
+```
+### Lint
+```
+npm run lint
+```
+## GitHub Pages
+<a href="https://ubihinon.github.io/tetris/dist/index.html">Tetris</a>
