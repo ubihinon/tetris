@@ -15,3 +15,9 @@ export default class App {
     controller.subscribe(game);
   }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.fonts.ready.then(() => {
+    new App();
+  });
+});

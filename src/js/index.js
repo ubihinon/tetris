@@ -1,8 +1,5 @@
-import App from './App';
+function requireAll(requireContext) {
+  return requireContext.keys().map(requireContext);
+}
 
-
-document.addEventListener('DOMContentLoaded', () => {
-  document.fonts.ready.then(() => {
-    new App();
-  });
-});
+requireAll(require.context('./', true, /^\.\/.*\.js$/));

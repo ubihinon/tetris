@@ -2,7 +2,7 @@ const path = require('path');
 const merge = require('webpack-merge');
 const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const babel = require('./webpack/babel');
 const fonts = require('./webpack/fonts');
 const css = require('./webpack/css');
@@ -41,21 +41,12 @@ const common = merge([
         title: 'Tetris',
         template: `${PATHS.src}/index.html`,
       }),
-      new FaviconsWebpackPlugin({
-        logo: './favicon.png',
-        cache: true,
-        inject: true,
-        prefix: './assets',
-        path: './assets',
-        favicons: {
-          appName: 'Tetris',
-          appDescription: 'Tetris',
-          developerName: 'Vladimir Nosov',
-          developerURL: null,
-          background: '#ddd',
-          theme_color: '#333',
+      new CopyPlugin([
+        {
+          from: `${PATHS.src}/media/favicons`,
+          to: `${PATHS.build}/media/favicons`,
         },
-      }),
+      ]),
     ],
   },
   babel(),
